@@ -150,7 +150,7 @@ void Threatsobject::InitThreats()
             }
             y_pos_=0;
             come_back_time_=0;
-
+            input_type_.left_=1;
 
 }
 void Threatsobject::CheckToMap(Map& map_data)
@@ -266,29 +266,67 @@ void Threatsobject::ImpMoveType(SDL_Renderer* screen)
     }
     else
     {
-        if(on_ground_=true)
+        if(on_ground_==true)
         {
-            if(x_pos_>animation_a_)
+            if(x_pos_>animation_b_)
             {
                 input_type_.left_=1;
-                input_type_.right_=0;
-                LoadImg("img//threat_left.png",screen);
+               input_type_.right_=0;
+               // LoadImg("img//threat_left.png",screen);
             }
-            else if(x_pos_<animation_b_)
+            else if(x_pos_<animation_a_)
             {
-                input_type_.left_=0;
-                input_type_.right_=1;
-                LoadImg("img//threat_right.png",screen);
+               input_type_.left_=0;
+               input_type_.right_=1;
+               // LoadImg("img//threat_left.png",screen);
             }
 
         }
-        else
+       /* else
         {
-            if(input_type_.left_=1)
+            if(input_type_.left_==1)
             {
                 LoadImg("img//threat_left.png",screen);
             }
-        }
+        }*/
 
+    }
+}
+void Threatsobject::InitBullet(BulletObject* p_bullet,SDL_Renderer* screen)
+{
+    if(p_bullet!=NULL)
+    {
+        p_bullet->LoadImg("img//dandich.png",screen);
+        p_bullet->set_is_move(true);
+        p_bullet->set_bullet_dir(BulletObject::DIR_LEFT);
+        p_bullet->SetRect(rect_.x+10,y_pos_+10);
+        p_bullet->set_x_val(15);
+        p_bullet_list_.push_back(p_bullet);
+    }
+}
+void Threatsobject::MakeBullet(SDL_Renderer* screen,const int& x_limit,const int& y_limit)
+{
+     for(int i=0;i<p_bullet_list_.size();i++)
+    {
+        BulletObject* p_bullet = p_bullet_list_.at(i);
+        if(p_bullet!=NULL)
+        {
+            if(p_bullet->get_is_move())
+            {
+                int bullet_distance= rect_.x+width_frame_-p_bullet->GetRect().x;
+                if(bullet_distance>-300)
+                {p_bullet->HandleMove(x_limit,y_limit);
+                p_bullet->Render(screen);}
+                else
+                {
+                    p_bullet->set_is_move(false);
+                }
+            }
+            else
+            {
+                p_bullet->set_is_move(true);
+                p_bullet->SetRect(rect_.x+10,y_pos_+10);
+            }
+        }
     }
 }

@@ -119,8 +119,10 @@ std::vector<Threatsobject*> MakeThreatList()
 
             p_threat->set_type_move(Threatsobject::STATIC_THREAT);
                  p_threat->set_input_left(0);
-            list_threats.push_back(p_threat);
+            BulletObject* p_bullet = new BulletObject();
+           p_threat->InitBullet(p_bullet,gscreen);
 
+            list_threats.push_back(p_threat);
 
         }
         if(p_threat==NULL)
@@ -195,6 +197,7 @@ int main( int argc, char* argv[] )
                        p_threat->SetMapXY(map_data.start_x_,map_data.start_y_);
                        p_threat->ImpMoveType(gscreen);
                        p_threat->DoPlayer(map_data);
+                       p_threat->MakeBullet(gscreen,SCREEN_WIDTH,SCREEN_HEIGHT);
                        p_threat->Show(gscreen);
 
                     }

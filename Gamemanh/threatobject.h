@@ -3,6 +3,7 @@
 
 #include "function.h"
 #include "baseobject.h"
+#include "bulletobject.h"
 
 #define THREAT_MAX_FALL_SPEED 10
 #define THREAT_GRAVITY_SPEED 0.8
@@ -37,11 +38,20 @@ void DoPlayer(Map& gMap);
 void CheckToMap(Map& gMap);
 void InitThreats();
 
-void set_type_move(const& typeMove){type_move_=typeMove;}
+void set_type_move(const int& typeMove){type_move_=typeMove;}
 void set_animation_pos(const int& pos_a,const int& pos_b){animation_a_=pos_a,animation_b_=pos_b;}
 void set_input_left(const int& ipleft){input_type_.left_=ipleft;}
 void ImpMoveType(SDL_Renderer* screen);
 
+ void set_bullet_list(std::vector<BulletObject*> bullet_list)
+  {
+      p_bullet_list_=bullet_list;
+
+  }
+  std::vector<BulletObject*> get_bullet_list()const {return p_bullet_list_;}
+
+  void InitBullet(BulletObject* p_bullet,SDL_Renderer* screen);
+  void MakeBullet(SDL_Renderer* screen,const int& x_limit,const int&y_limit);
 private:
  int map_x_;
  int map_y_;
@@ -62,6 +72,7 @@ private:
  int animation_b_;
 
  Input input_type_;
+  std::vector<BulletObject*> p_bullet_list_;
 
 };
 #endif // THREATS_OBJECT_H
